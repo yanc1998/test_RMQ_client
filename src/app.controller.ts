@@ -1,14 +1,20 @@
 import {Controller, Get} from '@nestjs/common';
 import {AppService} from './app.service';
-import {RabbitMqServices} from "./common/rabit-mq/Infra/services/rabbit-mq.services";
+import {SendEmailUseCase} from "./email/Application/UseCases/send-email.useCase";
 
 @Controller()
 export class AppController {
-    constructor(private readonly appService: AppService, private readonly rmq: RabbitMqServices) {
+    constructor(private readonly appService: AppService, private readonly sendEmailUseCase: SendEmailUseCase) {
     }
 
     @Get()
     getHello() {
-        return this.rmq.sendMessage({test: 'algo'})
+        return this.sendEmailUseCase.execute({
+            to: "yancarloglez98@gmail.com",
+            template: 'test_template',
+            data: {
+                name: 'Yank'
+            }
+        })
     }
 }
