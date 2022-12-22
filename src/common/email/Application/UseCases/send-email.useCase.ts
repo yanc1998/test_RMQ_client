@@ -1,6 +1,6 @@
 import {Inject, Injectable} from "@nestjs/common";
 import {ClientProxy} from "@nestjs/microservices";
-import {RabbitMqServices} from "../../../common/rabit-mq/Infra/services/rabbit-mq.services";
+import {RabbitMqServices} from "../../../rabit-mq/Infra/services/rabbit-mq.services";
 import {SendEmailDto} from "../DTO/send-email.dto";
 
 @Injectable()
@@ -11,13 +11,10 @@ export class SendEmailUseCase {
         this.rabbitMqService = new RabbitMqServices(clientService)
     }
 
-    execute(request: SendEmailDto) {
-        const func = (a): Promise<void> => {
-            console.log(a)
-            return
-        };
+    execute(request: SendEmailDto, callBack: (...params) => Promise<void>) {
+
         return this.rabbitMqService.sendMessage({
             template: request.template, to: request.to, data: request.data
-        }, 'send-email', func)
+        }, 'send-email', callBack)
     }
 }

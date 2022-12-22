@@ -1,11 +1,11 @@
 import {Module} from '@nestjs/common';
 import {AppController} from './app.controller';
 import {AppService} from './app.service';
-import {RabbitMqModule} from "./common/rabit-mq/rabbit-mq.module";
-import { EmailModule } from './email/email.module';
+import {EventDomainModule} from "./common/event-domain/event-domain.module";
+import {ScheduleModule} from "@nestjs/schedule";
 
 @Module({
-    imports: [RabbitMqModule, EmailModule],
+    imports: [EventDomainModule, ScheduleModule.forRoot(),],
     controllers: [AppController],
     providers: [AppService],
 })
